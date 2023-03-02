@@ -1,42 +1,28 @@
-pipeline {
+pipeline{
     agent any
-     parameters {
-        string name:'git_url', description: 'Please enter the repository url'
-        string name: 's3_bucket_name', description: 'Please enter the S3 bucket value'
-        // defaultValue:'https://github.com/Harish-Durairajan/ang-sample.git'
-        // defaultValue:'dummybucket-jenkins..'
-    }
     stages{
-	stage("clearing the workspace"){
+        stage("clean workspace"){
             steps{
-                cleanWs() 
+                cleanWs()
             }
         }
-
-        stage("pulling the source"){
+        stage("checking out from github"){
             steps{
-		checkout scmGit(branches: [[name: '*/master']], 
+                checkout scmGit(branches: [[name: '*/${Branch}']], 
                 userRemoteConfigs: [[url: '${git_url}']])
-		//checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-    		//userRemoteConfigs: [[url:'${params.Git-url}']]])
             }
         }
-	        
-        stage("building the angular application"){
+        stage("Building the source file"){
             steps{
-   		 sh "echo $PWD"
-                 sh "cd sample/hello-angular"
-              
-	         sh "ng build"
+                sh "npm i"
+                sh "npm run build"
+                
             }
         }
-
-        stage("pushing s3 bucket"){
+        stage("Deploying in S3"){
             steps{
-              sh "aws s3 cp hello-angular/src/index.html s3://${s3_bucket_name} --recursive"
+                sh "aws s3 cp dist/hello-angular s3://{sample-cicd-harish}"
             }
-        }      
-
+        }
     }
 }
-
