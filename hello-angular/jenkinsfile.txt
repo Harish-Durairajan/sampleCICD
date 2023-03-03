@@ -17,8 +17,7 @@ pipeline{
                 sh "pwd"
                 sh "cd "
                 sh "cd /home/harish/.jenkins/workspace/sample-angular-CICD/hello-angular"              
-                sh "npm i"
-                sh "npm run build"
+                sh "ng build"
             }
         }
         stage("Deploying in S3"){
