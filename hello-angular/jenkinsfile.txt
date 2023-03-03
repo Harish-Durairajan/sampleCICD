@@ -15,8 +15,8 @@ pipeline{
         stage("Building the source file"){
             steps{
                 sh "pwd"
-                sh "cd /hello-angular"
-                // sh "pwd"                
+                sh "cd "
+                sh "cd /home/harish/.jenkins/workspace/sample-angular-CICD/hello-angular"              
                 sh "npm i"
                 sh "npm run build"
             }
