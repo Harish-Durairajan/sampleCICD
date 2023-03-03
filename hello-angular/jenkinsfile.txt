@@ -14,8 +14,9 @@ pipeline{
         }
         stage("Building the source file"){
             steps{
+                sh "cd hello-angular"
                 sh "pwd"
-                sh "cd /hello-angular"
+                
                 sh "npm i"
                 sh "npm run build"
             }
